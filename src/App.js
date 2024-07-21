@@ -1,23 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import LandingPage from './components/LandingPage';
+import MobileVerify from './components/MobileVerify';
+import OtpScreen from './components/OtpScreen';
+import HospitalDetailsPage from './components/Hospital/HospitalDetails';
 
 function App() {
+  const [mobile, setMobile] = useState(true);
+  const [login, setLogin] = useState(false);
+  const [otp, setOtp] = useState(false);
+
+  const toggleLogin = () => setLogin(prev => !prev);
+  const toggleMobile = () => setMobile(prev => !prev);
+  const toggleOtp = () => setOtp(prev => !prev);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<LandingPage login={login} toggleLogin={toggleLogin} mobile={mobile} setMobile={setMobile} />} />
+          <Route path="/hospital/:id" element={<HospitalDetailsPage login={login} toggleLogin={toggleLogin} mobile={mobile} setMobile={setMobile} />} />
+        </Routes>
+        {mobile && <MobileVerify toggleMobile={toggleMobile} toggleOtp={toggleOtp} />}
+        {otp && <OtpScreen toggleLogin={toggleLogin} toggleOtp={toggleOtp} />}
+      </BrowserRouter>
     </div>
   );
 }
